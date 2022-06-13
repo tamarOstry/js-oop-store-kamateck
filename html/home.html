@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+     <script src="../classes/manager.js"></script>
+    <script src="../classes/store.js"></script>
+    <script src="../classes/product.js"></script>   
+
+    
+    <link href="../css/product.css" rel="stylesheet" />
+
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>products</title>
+
+    <template id="temp-card">
+        <div class="card" id="">
+            <div class="img-w">
+                <img src="" alt="" style="width:100%">
+            </div>
+            <h2 class="nameProduct"></h2>
+            <p class="price"></p>
+            <p class="inStock"></p>
+            <p><button >הוסף לסל</button></p>
+
+            <p><button id="edit" class="edit" style="display: none;">ערוך</button></p>
+            <p><button id="delete" class="delete" style="display: none;">מחק</button></p>
+
+            <p><button id="addToStock" style="display: none;" onclick="addToStock()">הוספה למלאי</button></p>
+            <input style="display: none;" type="text" id="input-amout-toAdd" class="input-amout-toAdd" placeholder="הכנס כמות להוספה"/>
+            <input style="display: none;" type="button" id="buton-ok-add" class="buton-ok-add" value="הוסף"/>
+
+            <p><button id="removeFromStock" style="display: none;">הורדה מהמלאי</button></p>
+            <input style="display: none;" type="text" id="input-amout-toRemove" class="input-amout-toRemove" placeholder="הכנס כמות להסרה"/>
+            <input style="display: none;" type="button" id="buton-ok-remove" class="buton-ok-remove" value="הוסף"/>
+        </div>
+    </template>
+    <template id="temp-card-edit">
+        <div class="card">
+            <div>קוד מוצר</div>
+            <div class="id"></div>
+            <div>הכנס שם מוצר</div>
+            <input class="nameProduct-edit" type="text"/>
+            <div>הכנס מחיר</div>
+            <input class="price-edit" type="number"/>
+            <div>בחר קטגוריה</div>
+            <select class="category-edit">
+                <option>choose category</option>
+                <option>car</option>
+                <option>motor_cicle</option>
+                <option>bus</option>
+            </select>
+            <div>הכנס כמות במלאי</div>
+            <input class="unitsInStock-edit" type="number"/>
+            <button class="saveEdit">שמור</button>
+        </div>
+    </template>
+    <template id="temp-category">
+        <div class="cb checkbox">
+            <input type="checkbox" class="opt" id="" value="">
+            <label class="lbl" for="">
+                <div class="OptionName"></div>
+                <div class="Count"></div>
+            </label>
+        </div>
+    </template>
+    <template id="Search">
+        <div>    
+            <input value="" type="checkbox" id="" class="input-search"/> 
+            <label for="" class="label-search"></label>
+        </div>
+    </template>
+</head>
+<body onload="getProducts(),getCategory(),changesToManager(),drowSearch()">
+    <header>
+        <div class="bar">
+            <section class="QuickLinks">
+                <ul>
+                    <li class="" data-section="myAccount">
+                        <a href="#" title="כניסה לצפייה בפרטי החשבון" data-link-id="DataLinkId" onclick="TrackLinkID(this);" data-link-name="DataLinkName" data-external="DataExternal" accesskey="h">החשבון שלי</a>
+                    </li>
+                    <li>
+                        <a href="#" title="קניה מהירה">קניה מהירה</a>
+                    </li>
+                    <li>
+                        <a href="#" title="עזרה - שאלות נפוצות, כיצד לקנות באינטרנט, מדריך ועוד" data-link-type="helpsite" target="_blank">עזרה</a>
+                    </li>
+                    <li>
+                        <a class="loginManager" href="./loginManager.html">הכנס כמנהל</a>
+                    </li>
+                </ul>
+            </section>
+            
+        ul>li*3>span.high
+        
+
+
+            <span class="BagSummary MiniBagNonSecure">
+                <a href="shoppingbag.html">
+                    <div class="Icon">
+                        <div class="ItemCount">
+                            <span id="ItemsCountText">0</span>
+                        </div>
+                    </div>
+                </a>
+            </span>
+            <div class="Checkout ">
+                <a class="goToCart" data-link-id="01-08" data-link-name="Checkout" rel="nofollow" href="ShoppingBag.html">לקופה</a>
+            </div>
+        </div>
+    </header>
+    <section class="Search">
+        <form id="newsearch" name="newsearch">
+            <div class="helper">
+                <label for="sli_search_1">חיפוש עפ"י:</label>
+            </div>
+            <div class="SearchBox" id="SearchBox">  
+
+            </div>
+            <input style="display: none;" type="text"  value="" id="sli_search_1" class="SearchByName" id="SearchByName" title="אנא מלאו את שדה זה" placeholder="חיפוש מוצר או מותג" required="required" spellcheck="false" autocomplete="off">
+            <input style="display: none;" type="number" placeholder="ממחיר" class="fromPrice">
+            <input style="display: none;" type="number" placeholder="עד מחיר" class="toPrice">
+            <input style="display: none;" type="submit" value="search" title="חיפוש פריטים" class="SearchButton" id="SearchButton" onclick="search()">
+         </form>
+    </section>
+    <button onclick="addProduct()" style="display:none" class="addProduct">הוסף מוצר חדש</button>
+    <div id="filters" class="Filters fixedVisible" style="display:none">
+        <div class="ResultCount" style="position: absolute; top: 0px;">
+            <a class="Clear" href="home.html">נקה הכל</a>
+            <div><span id="counter">0</span> מוצרים</div>
+        </div>
+      </div>
+    <div id="PoductList"></div>   
+    <div id="edit-add-product"></div>     
+</body>
+</html>
